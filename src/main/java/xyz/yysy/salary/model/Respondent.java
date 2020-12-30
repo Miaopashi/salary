@@ -16,12 +16,16 @@ public class Respondent {
     @Id
     private final String id;
     private final double salary;
+
     private final String gender;
+
     private final double collegeGPA;
     private final double percentage12;  // 十二年级平均分
+
     private final double english;
     private final double logical;
     private final double quant;  // 定量能力
+
     private final double conscientiousness;  // 严谨性
     private final double agreeableness;  // 宜人性
     private final double extraversion;  // 外向性
