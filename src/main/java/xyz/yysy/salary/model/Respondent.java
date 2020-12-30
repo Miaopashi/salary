@@ -10,12 +10,11 @@ import javax.persistence.Id;
 
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Entity
 public class Respondent {
     @Id
     private final String id;
-
     private final double salary;
     private final String gender;
     private final double collegeGPA;
