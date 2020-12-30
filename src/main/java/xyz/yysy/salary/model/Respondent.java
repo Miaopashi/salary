@@ -1,12 +1,21 @@
 package xyz.yysy.salary.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@Entity
 public class Respondent {
-    private final long id;
+    @Id
+    private final String id;
+
     private final double salary;
     private final String gender;
     private final double collegeGPA;
