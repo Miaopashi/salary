@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@NoArgsConstructor(access= AccessLevel.PROTECTED, force=true)
 @Entity
 public class Respondent {
     @Id
