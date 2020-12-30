@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class Respondent {
-    private final String id;
+    private final long id;
     private final double salary;
     private final String gender;
     private final double collegeGPA;
