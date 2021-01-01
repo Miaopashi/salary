@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.yysy.salary.model.Respondent;
 import xyz.yysy.salary.repository.RespondentRepository;
 
-import java.util.Set;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/data", produces = "applicaiton/json")
+//@RequestMapping(path = "/data", produces = "applicaiton/json")
 @CrossOrigin("*")
 public class AjaxController {
     private RespondentRepository respondentRepo;
