@@ -3,56 +3,88 @@
 <head>
     <meta charset="utf-8">
     <title>第一个 ECharts 实例</title>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
     <!-- 引入 echarts.js -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/extension/dataTool.min.js"></script>
 </head>
 <body>
-Hello World!
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="width: 600px;height:400px;"></div>
-<div id="main2" style="width: 600px;height:400px;"></div>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main2'));
-
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '第一个 ECharts 实例'
-        },
-        tooltip: {},
-        legend: {
-            data:['销量']
-        },
-        xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-        },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
+<div id="main" style="width: 450px;height:800px;"></div>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
-    $.get('https://www.runoob.com/static/js/echarts_test_data.json', function (data) {
-        myChart.setOption({
-            series : [
+    myChart.showLoading();  // 开启 loading 效果
+
+    $.get('http://localhost:10079/fm_chart', function (data_load) {
+        // alert("加载成功！"); // 测试代码，用于查看 loading 效果
+        myChart.hideLoading();  // 隐藏 loading 效果
+
+        var data = echarts.dataTool.prepareBoxplotData(data_load.data_salary, {
+            layout: 'vertical'
+        });
+
+        option = {
+            title: [
                 {
-                    name: '访问来源',
-                    type: 'pie',    // 设置图表类型为饼图
-                    radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
-                    data:data.data_pie
+                    text: '印度工科毕业生男女性别薪资箱线图',
+                    left: 'center',
                 }
-            ]
-        })
-    }, 'json')
+            ],
+            tooltip: {
+                trigger: 'item',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                data: data.axisData,
+                boundaryGap: true,
+                nameGap: 30,
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: '性别{value}（女0男1）'
+                },
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '薪资待遇/INR',
+                splitArea: {
+                    show: true
+                }
+            },
+            series: [
+                {
+                    name: 'boxplot',
+                    type: 'boxplot',
+                    data: data.boxData,
+                    tooltip: {
+                        formatter: function (param) {
+                            return [
+                                '详细参数: ',
+                                '最大值: ' + param.data[5],
+                                '上四分位点: ' + param.data[4],
+                                '中位数: ' + param.data[3],
+                                '下四分位点: ' + param.data[2],
+                                '最小值: ' + param.data[1]
+                            ].join('<br/>')
+                        }
+                    }
+                }]
+        };
+
+        myChart.setOption(option)
+    }, 'json');
 </script>
 </body>
