@@ -1,11 +1,13 @@
 package xyz.yysy.salary.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.yysy.salary.model.Respondent;
 import xyz.yysy.salary.repository.RespondentRepository;
+import xyz.yysy.salary.service.Service;
 
 import java.util.*;
 
@@ -13,10 +15,12 @@ import java.util.*;
 //@RequestMapping(path = "/data", produces = {"applicaiton/json", "text/html"})
 @CrossOrigin("*")
 public class AjaxController {
+    private final Service service;
     private RespondentRepository respondentRepo;
 
-    public AjaxController(RespondentRepository respondentRepo) {
+    public AjaxController(RespondentRepository respondentRepo, Service service) {
         this.respondentRepo = respondentRepo;
+        this.service = service;
     }
 
     @GetMapping("/fm_chart")
@@ -44,31 +48,7 @@ public class AjaxController {
         Iterable<Respondent> all = respondentRepo.findAll();
 
         // 根据薪资分为4层
-        ArrayList<Double> layer = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            layer.add((double) 0);
-        }
-        ArrayList<Double> salary = new ArrayList<>();
-        for (Respondent r :
-                all) {
-            salary.add(r.getSalary());
-        }
-        Collections.sort(salary);
-        int size = salary.size();
-        layer.set(0, salary.get(0));
-        if (size % 4 != 1) {
-            layer.set(1, (salary.get(size/4 - 1) + salary.get(size/4)) / 2);  // 下四分位点
-            if (size % 2 != 1)
-                layer.set(2, (salary.get(size/2 - 1) + salary.get(size/2)) / 2);
-            else
-                layer.set(2, salary.get(size/2 - 1));
-            layer.set(3, (salary.get(size*3/4 - 1) + salary.get((size*3/4)) / 2));  // 上四分位点
-        } else {
-            layer.set(1, salary.get(size/4 - 1));  // 下四分位点
-            layer.set(2, salary.get(size/2 - 1));
-            layer.set(3, salary.get(size*3/4 - 1));  // 上四分位点
-        }
-        layer.set(4, salary.get(size - 1));
+        ArrayList<Double> layer = service.getLayers(all);
 
         // 统计各层的数据
         int gpaCount, perCount;
