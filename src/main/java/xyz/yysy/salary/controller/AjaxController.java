@@ -16,7 +16,7 @@ import java.util.*;
 @CrossOrigin("*")
 public class AjaxController {
     private final Service service;
-    private RespondentRepository respondentRepo;
+    private final RespondentRepository respondentRepo;
 
     public AjaxController(RespondentRepository respondentRepo, Service service) {
         this.respondentRepo = respondentRepo;
@@ -50,27 +50,6 @@ public class AjaxController {
         // 根据薪资分为4层
         ArrayList<Double> layer = service.getLayers(all);
 
-        // 统计各层的数据
-        int gpaCount, perCount;
-        double gpaSum, perSum;
-        ArrayList<ArrayList<Double>> result = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            ArrayList<Double> avg = new ArrayList<>();
-            gpaCount = perCount = 0;
-            gpaSum = perSum = 0;
-            for (Respondent r :
-                    all) {
-                if (r.getSalary() >= layer.get(i) && r.getSalary() < layer.get(i + 1)) {
-                    gpaCount++;
-                    gpaSum += r.getCollegeGPA();
-                    perCount++;
-                    perSum += r.getPercentage12();
-                }
-            }
-            avg.add(perSum / perCount);
-            avg.add(gpaSum / gpaCount);
-            result.add(avg);
-        }
-        return result;
+        return service.getFmChartData(layer, all);
     }
 }
