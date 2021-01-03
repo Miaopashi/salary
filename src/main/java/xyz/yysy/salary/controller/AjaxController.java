@@ -3,8 +3,6 @@ package xyz.yysy.salary.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.yysy.salary.model.Respondent;
-import xyz.yysy.salary.repository.RespondentRepository;
 import xyz.yysy.salary.service.Service;
 
 import java.util.*;
@@ -14,10 +12,8 @@ import java.util.*;
 @CrossOrigin("*")
 public class AjaxController {
     private final Service service;
-    private final RespondentRepository respondentRepo;
 
-    public AjaxController(RespondentRepository respondentRepo, Service service) {
-        this.respondentRepo = respondentRepo;
+    public AjaxController(Service service) {
         this.service = service;
     }
 
