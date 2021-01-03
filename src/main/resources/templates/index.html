@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>Index</title>
+    <title>印度工科毕业生薪资影响因素分析</title>
     <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
@@ -12,12 +12,16 @@
         .box {
             display: inline-flex;
         }
+        body {
+            background-image: url("https://img.zcool.cn/community/017d6a5c513b9ca801213f26c6f65d.png@1280w_1l_2o_100sh.png");
+        }
     </style>
 </head>
 <body>
 <div class="box">
     <div id="main1" style="width: 600px;height:730px;"></div>
-    <div id="main2" style="width: 400px;height:730px;"></div>
+    <div id="main2" style="width: 300px;height:730px;"></div>
+    <div id="main3" style="width: 600px;height:730px;"></div>
 </div>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
@@ -35,8 +39,12 @@
         option = {
             title: [
                 {
-                    text: '印度工科毕业生男女性别薪资箱线图',
-                    left: 'center',
+                    text: '男女性别薪资箱线图',
+                    x: 'center',
+                    y: 'bottom',
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
                 }
             ],
             tooltip: {
@@ -59,7 +67,8 @@
                     show: false
                 },
                 axisLabel: {
-                    formatter: '性别{value}（女0男1）'
+                    formatter: '性别{value}（女0男1）',
+                    color: '#ffffff'
                 },
                 splitLine: {
                     show: false
@@ -68,8 +77,14 @@
             yAxis: {
                 type: 'value',
                 name: '薪资待遇/INR',
+                nameTextStyle: {
+                    color: ['#ffffff']
+                },
                 splitArea: {
                     show: true
+                },
+                axisLabel: {
+                    color: '#ffffff'
                 }
             },
             series: [
@@ -98,11 +113,11 @@
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart2 = echarts.init(document.getElementById('main2'));
-    myChart.showLoading();  // 开启 loading 效果
+    myChart2.showLoading();  // 开启 loading 效果
 
     $.get('http://localhost:10079/grade_chart', function (data_load) {
         // alert("加载成功！"); // 测试代码，用于查看 loading 效果
-        myChart.hideLoading();  // 隐藏 loading 效果
+        myChart2.hideLoading();  // 隐藏 loading 效果
 
         array1 = data_load[0];
         array1.splice(0, 0, '收入较低');
@@ -114,7 +129,11 @@
         array4.splice(0, 0, '高收入');
 
         option = {
-            legend: {},
+            legend: {
+                textStyle:{
+                    color: '#ffffff'//字体颜色
+                }
+            },
             tooltip: {},
             dataset: {
                 source: [
@@ -125,8 +144,17 @@
                     array4
                 ]
             },
-            xAxis: {type: 'category'},
-            yAxis: {},
+            xAxis: {
+                type: 'category',
+                axisLabel: {
+                    color: '#ffffff'
+                }
+            },
+            yAxis: {
+                axisLabel: {
+                    color: '#ffffff'
+                }
+            },
             // Declare several bar series, each will be mapped
             // to a column of dataset.source by default.
             series: [
@@ -135,13 +163,81 @@
             ],
             title: [
                 {
-                    text: '印度工科毕业生不同收入阶层的成绩情况',
+                    text: '不同收入阶层的成绩情况',
                     x: 'center',
-                    y: 'bottom'
+                    y: 'bottom',
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
                 }
             ]
         };
         myChart2.setOption(option)
+    }, 'json');
+</script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    myChart3.showLoading();  // 开启 loading 效果
+
+    $.get('http://localhost:10079/radar_chart', function (data_load) {
+        // alert("加载成功！"); // 测试代码，用于查看 loading 效果
+        myChart3.hideLoading();  // 隐藏 loading 效果
+
+        option = {
+            title: {
+                text: '高低收入人群性格特性和常见能力的雷达图',
+                x: 'center',
+                y: 'bottom',
+                textStyle: {
+                    color: '#ffffff'//字体颜色
+                }
+            },
+            tooltip: {},
+            legend: {
+                data: ['较低收入人群', '高收入人群'],
+                textStyle:{
+                    color: '#ffffff'//字体颜色
+                }
+            },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#fff',
+                        backgroundColor: '#999',
+                        borderRadius: 3,
+                        padding: [3, 5]
+                    }
+                },
+                indicator: [
+                    { name: '尽责性', max: 1.5},
+                    { name: '宜人性', max: 1.5},
+                    { name: '外向性', max: 1.5},
+                    { name: '神经质', max: 1.5},
+                    { name: '开放性', max: 1.5},
+                    { name: '英语能力', max: 600},
+                    { name: '逻辑能力', max: 600},
+                    { name: '定量能力', max: 600}
+                ]
+            },
+            series: [{
+                name: '较低收入人群vs高收入人群',
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data: [
+                    {
+                        value: data_load[0],
+                        name: '较低收入人群'
+                    },
+                    {
+                        value: data_load[3],
+                        name: '高收入人群'
+                    }
+                ]
+            }]
+        };
+        myChart3.setOption(option)
     }, 'json');
 </script>
 </body>

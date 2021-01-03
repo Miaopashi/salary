@@ -125,11 +125,11 @@ public class ServiceImpl implements xyz.yysy.salary.service.Service {
                     sum8 += r.getQuant();
                 }
             }
-            temp.add(sum1 / count1);
-            temp.add(sum2 / count2);
-            temp.add(sum3 / count3);
-            temp.add(sum4 / count4);
-            temp.add(sum5 / count5);
+            temp.add(sum1 / count1 + 1);
+            temp.add(sum2 / count2 + 1);
+            temp.add(sum3 / count3 + 1);
+            temp.add(sum4 / count4 + 1);
+            temp.add(sum5 / count5 + 1);
             temp.add(sum6 / count6);
             temp.add(sum7 / count7);
             temp.add(sum8 / count8);
