@@ -3,8 +3,10 @@ package xyz.yysy.salary.service;
 import xyz.yysy.salary.model.Respondent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface Service {
-    ArrayList<Double> getLayers(Iterable<Respondent> all);
-    ArrayList<ArrayList<Double>> getFmChartData(ArrayList<Double> layer, Iterable<Respondent> all);
+    ArrayList<Double> getLayers();
+    ArrayList<ArrayList<Double>> getGradeChartData(ArrayList<Double> layer);
+    HashMap<String, ArrayList<ArrayList<Double>>> getFmChartData();
 }
