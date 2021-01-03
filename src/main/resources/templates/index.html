@@ -7,11 +7,18 @@
     <!-- 引入 echarts.js -->
     <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/extension/dataTool.min.js"></script>
+
+    <style>
+        .box {
+            display: inline-flex;
+        }
+    </style>
 </head>
 <body>
-<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main1" style="width: 450px;height:800px;"></div>
-<div id="main2" style="width: 450px;height:800px;"></div>
+<div class="box">
+    <div id="main1" style="width: 450px;height:800px;"></div>
+    <div id="main2" style="width: 600px;height:730px;"></div>
+</div>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main1'));
@@ -86,6 +93,55 @@
         };
 
         myChart.setOption(option)
+    }, 'json');
+</script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    myChart.showLoading();  // 开启 loading 效果
+
+    $.get('http://localhost:10079/grade_chart', function (data_load) {
+        // alert("加载成功！"); // 测试代码，用于查看 loading 效果
+        myChart.hideLoading();  // 隐藏 loading 效果
+
+        array1 = data_load[0];
+        array1.splice(0, 0, '收入较低');
+        array2 = data_load[1];
+        array2.splice(0, 0, '中下收入');
+        array3 = data_load[2];
+        array3.splice(0, 0, '中上收入');
+        array4 = data_load[3];
+        array4.splice(0, 0, '高收入');
+
+        option = {
+            legend: {},
+            tooltip: {},
+            dataset: {
+                source: [
+                    ['product', '12年级平均分', '本科加权成绩'],
+                    array1,
+                    array2,
+                    array3,
+                    array4
+                ]
+            },
+            xAxis: {type: 'category'},
+            yAxis: {},
+            // Declare several bar series, each will be mapped
+            // to a column of dataset.source by default.
+            series: [
+                {type: 'bar'},
+                {type: 'bar'}
+            ],
+            title: [
+                {
+                    text: '印度工科毕业生不同收入阶层的成绩情况',
+                    x: 'center',
+                    y: 'bottom'
+                }
+            ]
+        };
+        myChart2.setOption(option)
     }, 'json');
 </script>
 </body>
