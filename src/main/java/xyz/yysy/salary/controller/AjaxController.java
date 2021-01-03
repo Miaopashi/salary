@@ -26,4 +26,9 @@ public class AjaxController {
     public ArrayList<ArrayList<Double>> gradeChart() {
        return service.getGradeChartData(service.getLayers());
     }
+
+    @GetMapping("/radar_chart")
+    public ArrayList<ArrayList<Double>> radarChart() {
+        return service.getRadarChartData(service.getLayers());
+    }
 }

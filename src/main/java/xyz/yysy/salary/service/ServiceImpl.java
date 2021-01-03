@@ -93,4 +93,48 @@ public class ServiceImpl implements xyz.yysy.salary.service.Service {
         result.put("data_salary", allSalary);
         return result;
     }
+
+    @Override
+    public ArrayList<ArrayList<Double>> getRadarChartData(ArrayList<Double> layer) {
+        Iterable<Respondent> all = respondentRepo.findAll();
+        int count1, count2, count3, count4, count5, count6, count7, count8;
+        double sum1, sum2, sum3, sum4, sum5, sum6, sum7, sum8;
+        ArrayList<ArrayList<Double>> result = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            ArrayList<Double> temp = new ArrayList<>();
+            count1 = count2 = count3 = count4 = count5 = count6 = count7 = count8 = 0;
+            sum1 = sum2 = sum3 = sum4 = sum5 = sum6 = sum7 = sum8 = 0;
+            for (Respondent r :
+                    all) {
+                if (r.getSalary() >= layer.get(i) && r.getSalary() < layer.get(i + 1)) {
+                    count1++;
+                    sum1 += r.getConscientiousness();
+                    count2++;
+                    sum2 += r.getAgreeableness();
+                    count3++;
+                    sum3 += r.getExtraversion();
+                    count4++;
+                    sum4 += r.getNueroticism();
+                    count5++;
+                    sum5 += r.getOpenness();
+                    count6++;
+                    sum6 += r.getEnglish();
+                    count7++;
+                    sum7 += r.getLogical();
+                    count8++;
+                    sum8 += r.getQuant();
+                }
+            }
+            temp.add(sum1 / count1);
+            temp.add(sum2 / count2);
+            temp.add(sum3 / count3);
+            temp.add(sum4 / count4);
+            temp.add(sum5 / count5);
+            temp.add(sum6 / count6);
+            temp.add(sum7 / count7);
+            temp.add(sum8 / count8);
+            result.add(temp);
+        }
+        return result;
+    }
 }
